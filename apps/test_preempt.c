@@ -18,8 +18,6 @@ void thread2(void *arg)
     (void)arg;
     printf("thread2\n");
 
-    uthread_create(thread3, arg);
-
     /* Hog the resource for the second thread */
     while (1)
     {
@@ -31,6 +29,7 @@ void thread1(void *arg)
 {
     (void)arg;
     uthread_create(thread2, arg);
+    uthread_create(thread3, arg);
     printf("thread1\n");
 
     /* Hog the resource for the first thread */
