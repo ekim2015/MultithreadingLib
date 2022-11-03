@@ -80,12 +80,13 @@ one queue for both blocked and ready threads. **uthread_yield()** had two
 pointers, curr and new, pointed to the current thread and the next thread. From
 there, a new thread is selected through dequeuing the oldest thread. If the next
 thread's state was either blocked or exited, it would simply push it back into
-the rear of the queue and another thread would be chosen. The current thread,
-represented by the curr pointer, would be enqueued back into the queue and have
-its state set to Ready. Because the current thread represents the currently
-running thread, we reset the current thread's pointer to this newly dequeued
-thread. We then call uthread_ctx_switch() to switch from the previously running
-thread's context to the new one.
+the rear of the queue and the next oldest thread would be checked to see if it
+was in the Ready state. The current thread, represented by the curr pointer,
+would be enqueued back into the queue and have its state set to Ready. Because
+the current thread represents the currently running thread, we reset the current
+thread's pointer to this newly dequeued thread. We then call
+uthread_ctx_switch() to switch from the previously running thread's context to
+the new one.
 
     /* Pick New Thread to Run */
     queue_dequeue(ready_queue, (void **)&next);
@@ -153,3 +154,8 @@ first timer interrupt should be the same. **preempt_stop()** stops the alarm by
 setting the timer values to 0. The signal handler was then restored to its
 default action, SIG_DFL, and sigaction() was called once more to restore the
 signal action.
+
+## Citations
+
+1. Porquet's syscall lecture (for signals)
+2. https://man7.org/linux/man-pages/man2/sigaction.2.html
