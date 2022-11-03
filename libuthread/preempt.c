@@ -28,6 +28,7 @@ void sig_handler(int dummy)
 	uthread_yield();
 }
 
+/* Helped by sample code of signals section of syscalls lecture */
 void preempt_disable(void)
 {
 	sigemptyset(&ss);
