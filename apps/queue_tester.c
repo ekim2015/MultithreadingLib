@@ -71,8 +71,8 @@ void test_iterator(void)
 	TEST_ASSERT(data[0] == 2);
 	TEST_ASSERT(queue_length(q) == 9);
 }
-/* Empty Queue */
 
+/* Enqueue item into a Null queue */
 void test_enqueue_null(void)
 {
 	queue_t q = NULL;
@@ -101,6 +101,7 @@ static void delete_helper(queue_t q, void *data)
 	}
 }
 
+/* Delete one item */
 void test_delete_one_data(void)
 {
 	queue_t q;
@@ -182,6 +183,7 @@ void test_delete_multiple_data_rear(void)
 	TEST_ASSERT(queue_length(q) == 5);
 }
 
+/* Delete an item that doesn't exit in the queue */
 void test_delete_not_in_queue(void)
 {
 	queue_t q;
@@ -202,6 +204,64 @@ void test_delete_not_in_queue(void)
 	TEST_ASSERT(return_value == -1);
 }
 
+/* Dequeue an empty queue*/
+void dequeue_queue_empty(void)
+{
+	queue_t q;
+	int *ptr, result;
+
+	fprintf(stderr, "*** TEST dequeue_queue_empty ***\n");
+
+	q = queue_create();
+	result = queue_dequeue(q, (void **)&ptr);
+	TEST_ASSERT(result == -1);
+}
+
+/* Delete a NULL item from queue */
+void delete_invalid_item(void)
+{
+	queue_t q;
+	int *num = NULL;
+	int result;
+	int data[] = {1, 2, 3, 4, 5};
+
+	fprintf(stderr, "*** TEST delete_invalid_item ***\n");
+
+	q = queue_create();
+	for (size_t i = 0; i < sizeof(data) / sizeof(data[0]); i++)
+		queue_enqueue(q, &data[i]);
+	result = queue_delete(q,num);
+	TEST_ASSERT(result == -1);
+}
+
+/* Destroy a non-empty queue */
+void destroy_nonempty_queue(void)
+{
+	queue_t q;
+	int result;
+	int data[] = {1, 2, 3, 4, 5};
+
+	fprintf(stderr, "*** TEST destroy_nonempty_queue ***\n");
+
+	q = queue_create();
+	for (size_t i = 0; i < sizeof(data) / sizeof(data[0]); i++)
+		queue_enqueue(q, &data[i]);
+	result = queue_destroy(q);
+	TEST_ASSERT(result == -1);
+}
+
+/* Destroy a null queue */
+void destroy_null_queue(void)
+{
+	int result;
+	queue_t q = NULL;
+
+	fprintf(stderr, "*** TEST destroy_null_queue ***\n");
+
+	result = queue_destroy(q);
+	TEST_ASSERT(result == -1);
+}
+
 int main(void)
 {
 	test_create();
@@ -213,6 +273,10 @@ int main(void)
 	test_delete_multiple_data_front();
 	test_delete_multiple_data_rear();
 	test_delete_not_in_queue();
+	dequeue_queue_empty();
+	delete_invalid_item();
+	destroy_nonempty_queue();
+	destroy_null_queue();
 
 	return 0;
 }

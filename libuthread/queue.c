@@ -45,14 +45,14 @@ int queue_destroy(queue_t queue)
 		return -1;
 	}
 
-	// free from memory
+	/* Free from memory */
 	free(queue);
 	return 0;
 }
 
 int queue_enqueue(queue_t queue, void *data)
 {
-	/* Allocate memory for a new node*/
+	/* Allocate memory for a new node */
 	/* The newest node will always be the rear */
 	struct node *info_node;
 
@@ -77,7 +77,8 @@ int queue_enqueue(queue_t queue, void *data)
 	}
 	else
 	{
-		info_node->prev = queue->rear; // pointer to previous node
+		/* Pointer to the previous node */
+		info_node->prev = queue->rear;
 		queue->rear->next = info_node;
 		queue->rear = info_node;
 	}
@@ -159,7 +160,7 @@ int queue_delete(queue_t queue, void *data)
 		currentNode->prev->next = currentNode->next;
 	}
 
-	/* Decrement Queue Length*/
+	/* Decrement Queue Length */
 	queue->len--;
 
 	return retval;

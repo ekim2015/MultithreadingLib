@@ -25,7 +25,7 @@ struct uthread_tcb
 	state state;
 };
 
-/* Create global queues for ready thread */
+/* Create global queue for ready thread */
 queue_t ready_queue;
 
 struct uthread_tcb *current_thread;
@@ -128,7 +128,7 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
 	/* Preempt Start */
 	preempt_start(preempt);
 
-	/* Create global queues */
+	/* Create global queue */
 	ready_queue = queue_create();
 
 	/* Disable Preempt */
